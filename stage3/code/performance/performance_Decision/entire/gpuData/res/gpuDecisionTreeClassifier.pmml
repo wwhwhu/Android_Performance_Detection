@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.6.7"/>
+		<Timestamp>2023-05-24T12:26:12Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('classifier', DecisionTreeClassifier())])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="label" optype="categorical" dataType="integer">
+			<Value value="0"/>
+			<Value value="1"/>
+		</DataField>
+		<DataField name="tempCPU0" optype="continuous" dataType="float"/>
+		<DataField name="tempCPU1" optype="continuous" dataType="float"/>
+		<DataField name="tempCPU2" optype="continuous" dataType="float"/>
+		<DataField name="tempCPU3" optype="continuous" dataType="float"/>
+		<DataField name="tempCPU4" optype="continuous" dataType="float"/>
+		<DataField name="tempCPU6" optype="continuous" dataType="float"/>
+		<DataField name="tempCPU7" optype="continuous" dataType="float"/>
+		<DataField name="batteryTemp" optype="continuous" dataType="float"/>
+		<DataField name="gpuUsage" optype="continuous" dataType="float"/>
+		<DataField name="GpuFreq" optype="continuous" dataType="float"/>
+		<DataField name="cpu0Freq" optype="continuous" dataType="float"/>
+		<DataField name="cpu4Freq" optype="continuous" dataType="float"/>
+		<DataField name="cpu5Freq" optype="continuous" dataType="float"/>
+		<DataField name="cpu6Freq" optype="continuous" dataType="float"/>
+		<DataField name="cpu7Freq" optype="continuous" dataType="float"/>
+		<DataField name="MemAvailable" optype="continuous" dataType="float"/>
+		<DataField name="MemFree" optype="continuous" dataType="float"/>
+		<DataField name="cpuUsage" optype="continuous" dataType="float"/>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<TreeModel functionName="classification" missingValueStrategy="nullPrediction">
+		<MiningSchema>
+			<MiningField name="label" usageType="target"/>
+			<MiningField name="gpuUsage"/>
+			<MiningField name="tempCPU7"/>
+			<MiningField name="batteryTemp"/>
+			<MiningField name="cpuUsage"/>
+			<MiningField name="tempCPU2"/>
+			<MiningField name="cpu6Freq"/>
+			<MiningField name="cpu0Freq"/>
+			<MiningField name="cpu4Freq"/>
+			<MiningField name="tempCPU4"/>
+			<MiningField name="tempCPU0"/>
+			<MiningField name="tempCPU6"/>
+			<MiningField name="cpu7Freq"/>
+			<MiningField name="GpuFreq"/>
+			<MiningField name="tempCPU1"/>
+			<MiningField name="MemFree"/>
+			<MiningField name="MemAvailable"/>
+			<MiningField name="cpu5Freq"/>
+			<MiningField name="tempCPU3"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+			<OutputField name="probability(1)" optype="continuous" dataType="double" feature="probability" value="1"/>
+		</Output>
+		<LocalTransformations>
+			<DerivedField name="double(gpuUsage)" optype="continuous" dataType="double">
+				<FieldRef field="gpuUsage"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU7)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU7"/>
+			</DerivedField>
+			<DerivedField name="double(batteryTemp)" optype="continuous" dataType="double">
+				<FieldRef field="batteryTemp"/>
+			</DerivedField>
+			<DerivedField name="double(cpuUsage)" optype="continuous" dataType="double">
+				<FieldRef field="cpuUsage"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU2)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU2"/>
+			</DerivedField>
+			<DerivedField name="double(cpu6Freq)" optype="continuous" dataType="double">
+				<FieldRef field="cpu6Freq"/>
+			</DerivedField>
+			<DerivedField name="double(cpu0Freq)" optype="continuous" dataType="double">
+				<FieldRef field="cpu0Freq"/>
+			</DerivedField>
+			<DerivedField name="double(cpu4Freq)" optype="continuous" dataType="double">
+				<FieldRef field="cpu4Freq"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU4)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU4"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU0)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU0"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU6)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU6"/>
+			</DerivedField>
+			<DerivedField name="double(cpu7Freq)" optype="continuous" dataType="double">
+				<FieldRef field="cpu7Freq"/>
+			</DerivedField>
+			<DerivedField name="double(GpuFreq)" optype="continuous" dataType="double">
+				<FieldRef field="GpuFreq"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU1)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU1"/>
+			</DerivedField>
+			<DerivedField name="double(MemFree)" optype="continuous" dataType="double">
+				<FieldRef field="MemFree"/>
+			</DerivedField>
+			<DerivedField name="double(MemAvailable)" optype="continuous" dataType="double">
+				<FieldRef field="MemAvailable"/>
+			</DerivedField>
+			<DerivedField name="double(cpu5Freq)" optype="continuous" dataType="double">
+				<FieldRef field="cpu5Freq"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU3)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU3"/>
+			</DerivedField>
+		</LocalTransformations>
+		<Node>
+			<True/>
+			<Node>
+				<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.8495000004768372"/>
+				<Node>
+					<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.8135000169277191"/>
+					<Node>
+						<SimplePredicate field="double(tempCPU7)" operator="lessOrEqual" value="94.45000076293945"/>
+						<Node>
+							<SimplePredicate field="double(batteryTemp)" operator="lessOrEqual" value="37.95000076293945"/>
+							<Node>
+								<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.38275280594825745"/>
+								<Node score="0" recordCount="371">
+									<SimplePredicate field="double(tempCPU2)" operator="lessOrEqual" value="49.44999885559082"/>
+									<ScoreDistribution value="0" recordCount="371"/>
+									<ScoreDistribution value="1" recordCount="0"/>
+								</Node>
+								<Node score="1" recordCount="1">
+									<SimplePredicate field="double(tempCPU7)" operator="lessOrEqual" value="49.25"/>
+									<ScoreDistribution value="0" recordCount="0"/>
+									<ScoreDistribution value="1" recordCount="1"/>
+								</Node>
+								<Node score="0" recordCount="13">
+									<True/>
+									<ScoreDistribution value="0" recordCount="13"/>
+									<ScoreDistribution value="1" recordCount="0"/>
+								</Node>
+							</Node>
+							<Node>
+								<SimplePredicate field="double(cpu6Freq)" operator="lessOrEqual" value="1555200.0"/>
+								<Node score="0" recordCount="2">
+									<SimplePredicate field="double(cpu0Freq)" operator="lessOrEqual" value="1660800.0"/>
+									<ScoreDistribution value="0" recordCount="2"/>
+									<ScoreDistribution value="1" recordCount="0"/>
+								</Node>
+								<Node score="1" recordCount="15">
+									<True/>
+									<ScoreDistribution value="0" recordCount="0"/>
+									<ScoreDistribution value="1" recordCount="15"/>
+								</Node>
+							</Node>
+							<Node>
+								<SimplePredicate field="double(cpu4Freq)" operator="lessOrEqual" value="1612800.0"/>
+								<Node>
+									<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.18249999731779099"/>
+									<Node score="1" recordCount="1">
+										<SimplePredicate field="double(tempCPU4)" operator="lessOrEqual" value="45.60000038146973"/>
+										<ScoreDistribution value="0" recordCount="0"/>
+										<ScoreDistribution value="1" recordCount="1"/>
+									</Node>
+									<Node score="0" recordCount="4">
+										<True/>
+										<ScoreDistribution value="0" recordCount="4"/>
+										<ScoreDistribution value="1" recordCount="0"/>
+									</Node>
+								</Node>
+								<Node score="1" recordCount="7">
+									<True/>
+									<ScoreDistribution value="0" recordCount="0"/>
+									<ScoreDistribution value="1" recordCount="7"/>
+								</Node>
+							</Node>
+							<Node>
+								<SimplePredicate field="double(tempCPU0)" operator="lessOrEqual" value="71.60000228881836"/>
+								<Node>
+									<SimplePredicate field="double(tempCPU6)" operator="lessOrEqual" value="56.599998474121094"/>
+									<Node>
+										<SimplePredicate field="double(tempCPU4)" operator="lessOrEqual" value="54.400001525878906"/>
+										<Node score="0" recordCount="10">
+											<SimplePredicate field="double(cpu7Freq)" operator="lessOrEqual" value="1372800.0"/>
+											<ScoreDistribution value="0" recordCount="10"/>
+											<ScoreDistribution value="1" recordCount="0"/>
+										</Node>
+										<Node score="1" recordCount="3">
+											<SimplePredicate field="double(batteryTemp)" operator="lessOrEqual" value="34.20000076293945"/>
+											<ScoreDistribution value="0" recordCount="0"/>
+											<ScoreDistribution value="1" recordCount="3"/>
+										</Node>
+										<Node score="0" recordCount="2">
+											<True/>
+											<ScoreDistribution value="0" recordCount="2"/>
+											<ScoreDistribution value="1" recordCount="0"/>
+										</Node>
+									</Node>
+									<Node score="1" recordCount="4">
+										<True/>
+										<ScoreDistribution value="0" recordCount="0"/>
+										<ScoreDistribution value="1" recordCount="4"/>
+									</Node>
+								</Node>
+								<Node>
+									<SimplePredicate field="double(cpu6Freq)" operator="lessOrEqual" value="2284800.0"/>
+									<Node score="0" recordCount="9">
+										<SimplePredicate field="double(tempCPU4)" operator="lessOrEqual" value="69.45000076293945"/>
+										<ScoreDistribution value="0" recordCount="9"/>
+										<ScoreDistribution value="1" recordCount="0"/>
+									</Node>
+									<Node score="1" recordCount="1">
+										<True/>
+										<ScoreDistribution value="0" recordCount="0"/>
+										<ScoreDistribution value="1" recordCount="1"/>
+									</Node>
+								</Node>
+								<Node score="0" recordCount="50">
+									<True/>
+									<ScoreDistribution value="0" recordCount="50"/>
+									<ScoreDistribution value="1" recordCount="0"/>
+								</Node>
+							</Node>
+							<Node score="1" recordCount="2">
+								<True/>
+								<ScoreDistribution value="0" recordCount="0"/>
+								<ScoreDistribution value="1" recordCount="2"/>
+							</Node>
+						</Node>
+						<Node>
+							<SimplePredicate field="double(GpuFreq)" operator="lessOrEqual" value="6.42E8"/>
+							<Node>
+								<SimplePredicate field="double(tempCPU7)" operator="lessOrEqual" value="89.45000076293945"/>
+								<Node>
+									<SimplePredicate field="double(tempCPU1)" operator="lessOrEqual" value="88.45000076293945"/>
+									<Node>
+										<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.0696607455611229"/>
+										<Node score="0" recordCount="2782">
+											<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.7894999980926514"/>
+											<ScoreDistribution value="0" recordCount="2782"/>
+											<ScoreDistribution value="1" recordCount="0"/>
+										</Node>
+										<Node score="0" recordCount="195">
+											<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.511930912733078"/>
+											<ScoreDistribution value="0" recordCount="195"/>
+											<ScoreDistribution value="1" recordCount="0"/>
+										</Node>
+										<Node score="1" recordCount="1">
+											<True/>
+											<ScoreDistribution value="0" recordCount="0"/>
+											<ScoreDistribution value="1" recordCount="1"/>
+										</Node>
+									</Node>
+									<Node>
+										<SimplePredicate field="double(tempCPU2)" operator="lessOrEqual" value="77.9000015258789"/>
+										<Node score="1" recordCount="1">
+											<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.07002841308712959"/>
+											<ScoreDistribution value="0" recordCount="0"/>
+											<ScoreDistribution value="1" recordCount="1"/>
+										</Node>
+										<Node score="0" recordCount="384">
+											<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.5723694562911987"/>
+											<ScoreDistribution value="0" recordCount="384"/>
+											<ScoreDistribution value="1" recordCount="0"/>
+										</Node>
+										<Node score="1" recordCount="1">
+											<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.5744044482707977"/>
+											<ScoreDistribution value="0" recordCount="0"/>
+											<ScoreDistribution value="1" recordCount="1"/>
+										</Node>
+										<Node score="0" recordCount="4">
+											<True/>
+											<ScoreDistribution value="0" recordCount="4"/>
+											<ScoreDistribution value="1" recordCount="0"/>
+										</Node>
+									</Node>
+									<Node score="1" recordCount="2">
+										<True/>
+										<ScoreDistribution value="0" recordCount="0"/>
+										<ScoreDistribution value="1" recordCount="2"/>
+									</Node>
+								</Node>
+								<Node score="1" recordCount="1">
+									<SimplePredicate field="double(tempCPU4)" operator="lessOrEqual" value="86.9000015258789"/>
+									<ScoreDistribution value="0" recordCount="0"/>
+									<ScoreDistribution value="1" recordCount="1"/>
+								</Node>
+								<Node score="0" recordCount="15">
+									<True/>
+									<ScoreDistribution value="0" recordCount="15"/>
+									<ScoreDistribution value="1" recordCount="0"/>
+								</Node>
+							</Node>
+							<Node>
+								<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.04677117243409157"/>
+								<Node score="0" recordCount="105">
+									<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.5307529270648956"/>
+									<ScoreDistribution value="0" recordCount="105"/>
+									<ScoreDistribution value="1" recordCount="0"/>
+								</Node>
+								<Node score="0" recordCount="1">
+									<SimplePredicate field="double(tempCPU4)" operator="lessOrEqual" value="80.95000076293945"/>
+									<ScoreDistribution value="0" recordCount="1"/>
+									<ScoreDistribution value="1" recordCount="0"/>
+								</Node>
+								<Node score="1" recordCount="1">
+									<True/>
+									<ScoreDistribution value="0" recordCount="0"/>
+									<ScoreDistribution value="1" recordCount="1"/>
+								</Node>
+							</Node>
+							<Node score="1" recordCount="5">
+								<True/>
+								<ScoreDistribution value="0" recordCount="0"/>
+								<ScoreDistribution value="1" recordCount="5"/>
+							</Node>
+						</Node>
+						<Node>
+							<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.5116758048534393"/>
+							<Node score="0" recordCount="235">
+								<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.03752744849771261"/>
+								<ScoreDistribution value="0" recordCount="235"/>
+								<ScoreDistribution value="1" recordCount="0"/>
+							</Node>
+							<Node score="1" recordCount="1">
+								<True/>
+								<ScoreDistribution value="0" recordCount="0"/>
+								<ScoreDistribution value="1" recordCount="1"/>
+							</Node>
+						</Node>
+						<Node score="1" recordCount="14">
+							<SimplePredicate field="double(cpu5Freq)" operator="lessOrEqual" value="2112000.0"/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="14"/>
+						</Node>
+						<Node score="0" recordCount="1">
+							<True/>
+							<ScoreDistribution value="0" recordCount="1"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+					</Node>
+					<Node>
+						<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.020324748009443283"/>
+						<Node score="0" recordCount="37">
+							<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.7268883585929871"/>
+							<ScoreDistribution value="0" recordCount="37"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+						<Node score="1" recordCount="1">
+							<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.4715465009212494"/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="1"/>
+						</Node>
+						<Node score="0" recordCount="2">
+							<True/>
+							<ScoreDistribution value="0" recordCount="2"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+					</Node>
+					<Node score="1" recordCount="17">
+						<True/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="17"/>
+					</Node>
+				</Node>
+				<Node>
+					<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.02742958255112171"/>
+					<Node>
+						<SimplePredicate field="double(cpu4Freq)" operator="lessOrEqual" value="1142400.0"/>
+						<Node score="0" recordCount="1">
+							<SimplePredicate field="double(tempCPU0)" operator="lessOrEqual" value="74.95000076293945"/>
+							<ScoreDistribution value="0" recordCount="1"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+						<Node score="1" recordCount="3">
+							<True/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="3"/>
+						</Node>
+					</Node>
+					<Node>
+						<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.5273374319076538"/>
+						<Node>
+							<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.019303428940474987"/>
+							<Node score="0" recordCount="125">
+								<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.5073847472667694"/>
+								<ScoreDistribution value="0" recordCount="125"/>
+								<ScoreDistribution value="1" recordCount="0"/>
+							</Node>
+							<Node score="0" recordCount="5">
+								<SimplePredicate field="double(tempCPU0)" operator="lessOrEqual" value="83.75"/>
+								<ScoreDistribution value="0" recordCount="5"/>
+								<ScoreDistribution value="1" recordCount="0"/>
+							</Node>
+							<Node score="1" recordCount="1">
+								<True/>
+								<ScoreDistribution value="0" recordCount="0"/>
+								<ScoreDistribution value="1" recordCount="1"/>
+							</Node>
+						</Node>
+						<Node score="0" recordCount="8">
+							<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.8294999897480011"/>
+							<ScoreDistribution value="0" recordCount="8"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+						<Node score="1" recordCount="2">
+							<True/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="2"/>
+						</Node>
+					</Node>
+					<Node score="1" recordCount="1">
+						<True/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="1"/>
+					</Node>
+				</Node>
+				<Node score="1" recordCount="37">
+					<True/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="1" recordCount="37"/>
+				</Node>
+			</Node>
+			<Node>
+				<SimplePredicate field="double(batteryTemp)" operator="lessOrEqual" value="62.25"/>
+				<Node score="0" recordCount="11">
+					<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.25839177146553993"/>
+					<ScoreDistribution value="0" recordCount="11"/>
+					<ScoreDistribution value="1" recordCount="0"/>
+				</Node>
+				<Node>
+					<SimplePredicate field="double(tempCPU0)" operator="lessOrEqual" value="91.45000076293945"/>
+					<Node>
+						<SimplePredicate field="double(tempCPU7)" operator="lessOrEqual" value="70.45000076293945"/>
+						<Node score="1" recordCount="1">
+							<SimplePredicate field="double(batteryTemp)" operator="lessOrEqual" value="42.75"/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="1"/>
+						</Node>
+						<Node score="0" recordCount="2">
+							<True/>
+							<ScoreDistribution value="0" recordCount="2"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+					</Node>
+					<Node>
+						<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.0100638666190207"/>
+						<Node>
+							<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.890500009059906"/>
+							<Node score="1" recordCount="1">
+								<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.5006970465183258"/>
+								<ScoreDistribution value="0" recordCount="0"/>
+								<ScoreDistribution value="1" recordCount="1"/>
+							</Node>
+							<Node score="0" recordCount="2">
+								<True/>
+								<ScoreDistribution value="0" recordCount="2"/>
+								<ScoreDistribution value="1" recordCount="0"/>
+							</Node>
+						</Node>
+						<Node score="1" recordCount="25">
+							<True/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="25"/>
+						</Node>
+					</Node>
+					<Node>
+						<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.8555000126361847"/>
+						<Node score="0" recordCount="1">
+							<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.015840587206184864"/>
+							<ScoreDistribution value="0" recordCount="1"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+						<Node score="1" recordCount="11">
+							<True/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="11"/>
+						</Node>
+					</Node>
+					<Node score="1" recordCount="1225">
+						<True/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="1225"/>
+					</Node>
+				</Node>
+				<Node score="1" recordCount="221">
+					<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.48819561302661896"/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="1" recordCount="221"/>
+				</Node>
+				<Node score="0" recordCount="34">
+					<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.028260129503905773"/>
+					<ScoreDistribution value="0" recordCount="34"/>
+					<ScoreDistribution value="1" recordCount="0"/>
+				</Node>
+				<Node score="1" recordCount="9">
+					<True/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="1" recordCount="9"/>
+				</Node>
+			</Node>
+			<Node score="0" recordCount="13">
+				<SimplePredicate field="double(tempCPU3)" operator="lessOrEqual" value="91.10000228881836"/>
+				<ScoreDistribution value="0" recordCount="13"/>
+				<ScoreDistribution value="1" recordCount="0"/>
+			</Node>
+			<Node score="1" recordCount="1">
+				<True/>
+				<ScoreDistribution value="0" recordCount="0"/>
+				<ScoreDistribution value="1" recordCount="1"/>
+			</Node>
+		</Node>
+	</TreeModel>
+</PMML>

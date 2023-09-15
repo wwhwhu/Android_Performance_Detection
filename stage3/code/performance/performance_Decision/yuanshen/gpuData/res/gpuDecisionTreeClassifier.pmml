@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.6.7"/>
+		<Timestamp>2023-05-24T10:21:25Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('classifier', DecisionTreeClassifier())])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="label" optype="categorical" dataType="integer">
+			<Value value="0"/>
+			<Value value="1"/>
+		</DataField>
+		<DataField name="FrontAPPCodeMemPercent" optype="continuous" dataType="float"/>
+		<DataField name="FrontAPPStackMemPercent" optype="continuous" dataType="float"/>
+		<DataField name="tempCPU6" optype="continuous" dataType="float"/>
+		<DataField name="gpuUsage" optype="continuous" dataType="float"/>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<TreeModel functionName="classification" missingValueStrategy="nullPrediction">
+		<MiningSchema>
+			<MiningField name="label" usageType="target"/>
+			<MiningField name="gpuUsage"/>
+			<MiningField name="FrontAPPStackMemPercent"/>
+			<MiningField name="tempCPU6"/>
+			<MiningField name="FrontAPPCodeMemPercent"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+			<OutputField name="probability(1)" optype="continuous" dataType="double" feature="probability" value="1"/>
+		</Output>
+		<LocalTransformations>
+			<DerivedField name="double(gpuUsage)" optype="continuous" dataType="double">
+				<FieldRef field="gpuUsage"/>
+			</DerivedField>
+			<DerivedField name="double(FrontAPPStackMemPercent)" optype="continuous" dataType="double">
+				<FieldRef field="FrontAPPStackMemPercent"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU6)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU6"/>
+			</DerivedField>
+			<DerivedField name="double(FrontAPPCodeMemPercent)" optype="continuous" dataType="double">
+				<FieldRef field="FrontAPPCodeMemPercent"/>
+			</DerivedField>
+		</LocalTransformations>
+		<Node>
+			<True/>
+			<Node>
+				<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.9645000100135803"/>
+				<Node score="0" recordCount="2032">
+					<SimplePredicate field="double(FrontAPPStackMemPercent)" operator="lessOrEqual" value="5.168162169866264E-4"/>
+					<ScoreDistribution value="0" recordCount="2032"/>
+					<ScoreDistribution value="1" recordCount="0"/>
+				</Node>
+				<Node score="0" recordCount="10">
+					<SimplePredicate field="double(tempCPU6)" operator="lessOrEqual" value="91.60000228881836"/>
+					<ScoreDistribution value="0" recordCount="10"/>
+					<ScoreDistribution value="1" recordCount="0"/>
+				</Node>
+				<Node score="1" recordCount="2">
+					<True/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="1" recordCount="2"/>
+				</Node>
+			</Node>
+			<Node>
+				<SimplePredicate field="double(FrontAPPCodeMemPercent)" operator="lessOrEqual" value="0.03443382866680622"/>
+				<Node score="0" recordCount="2">
+					<SimplePredicate field="double(FrontAPPCodeMemPercent)" operator="lessOrEqual" value="0.028020456433296204"/>
+					<ScoreDistribution value="0" recordCount="2"/>
+					<ScoreDistribution value="1" recordCount="0"/>
+				</Node>
+				<Node score="1" recordCount="836">
+					<True/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="1" recordCount="836"/>
+				</Node>
+			</Node>
+			<Node score="0" recordCount="4">
+				<True/>
+				<ScoreDistribution value="0" recordCount="4"/>
+				<ScoreDistribution value="1" recordCount="0"/>
+			</Node>
+		</Node>
+	</TreeModel>
+</PMML>

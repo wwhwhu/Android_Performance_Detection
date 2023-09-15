@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.6.7"/>
+		<Timestamp>2023-05-24T10:19:53Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('classifier', DecisionTreeClassifier())])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="label" optype="categorical" dataType="integer">
+			<Value value="0"/>
+			<Value value="1"/>
+		</DataField>
+		<DataField name="FrontAPPSystemMemPercent" optype="continuous" dataType="float"/>
+		<DataField name="gpuUsage" optype="continuous" dataType="float"/>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<TreeModel functionName="classification" missingValueStrategy="nullPrediction">
+		<MiningSchema>
+			<MiningField name="label" usageType="target"/>
+			<MiningField name="gpuUsage"/>
+			<MiningField name="FrontAPPSystemMemPercent"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+			<OutputField name="probability(1)" optype="continuous" dataType="double" feature="probability" value="1"/>
+		</Output>
+		<LocalTransformations>
+			<DerivedField name="double(gpuUsage)" optype="continuous" dataType="double">
+				<FieldRef field="gpuUsage"/>
+			</DerivedField>
+			<DerivedField name="double(FrontAPPSystemMemPercent)" optype="continuous" dataType="double">
+				<FieldRef field="FrontAPPSystemMemPercent"/>
+			</DerivedField>
+		</LocalTransformations>
+		<Node>
+			<True/>
+			<Node>
+				<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.4424999803304672"/>
+				<Node score="1" recordCount="2">
+					<SimplePredicate field="double(FrontAPPSystemMemPercent)" operator="lessOrEqual" value="0.0028964681550860405"/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="1" recordCount="2"/>
+				</Node>
+				<Node score="0" recordCount="1754">
+					<True/>
+					<ScoreDistribution value="0" recordCount="1754"/>
+					<ScoreDistribution value="1" recordCount="0"/>
+				</Node>
+			</Node>
+			<Node score="1" recordCount="353">
+				<True/>
+				<ScoreDistribution value="0" recordCount="0"/>
+				<ScoreDistribution value="1" recordCount="353"/>
+			</Node>
+		</Node>
+	</TreeModel>
+</PMML>

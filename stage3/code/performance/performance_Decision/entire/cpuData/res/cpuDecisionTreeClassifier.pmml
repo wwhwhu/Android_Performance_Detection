@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.6.7"/>
+		<Timestamp>2023-05-24T12:22:02Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('classifier', DecisionTreeClassifier())])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="label" optype="categorical" dataType="integer">
+			<Value value="0"/>
+			<Value value="2"/>
+		</DataField>
+		<DataField name="tempCPU2" optype="continuous" dataType="float"/>
+		<DataField name="cpuUsage" optype="continuous" dataType="float"/>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<TreeModel functionName="classification" missingValueStrategy="nullPrediction">
+		<MiningSchema>
+			<MiningField name="label" usageType="target"/>
+			<MiningField name="cpuUsage"/>
+			<MiningField name="tempCPU2"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+			<OutputField name="probability(2)" optype="continuous" dataType="double" feature="probability" value="2"/>
+		</Output>
+		<LocalTransformations>
+			<DerivedField name="double(cpuUsage)" optype="continuous" dataType="double">
+				<FieldRef field="cpuUsage"/>
+			</DerivedField>
+			<DerivedField name="double(tempCPU2)" optype="continuous" dataType="double">
+				<FieldRef field="tempCPU2"/>
+			</DerivedField>
+		</LocalTransformations>
+		<Node>
+			<True/>
+			<Node>
+				<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.9288995862007141"/>
+				<Node score="2" recordCount="1">
+					<SimplePredicate field="double(tempCPU2)" operator="lessOrEqual" value="26.949999809265137"/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="2" recordCount="1"/>
+				</Node>
+				<Node score="0" recordCount="4025">
+					<True/>
+					<ScoreDistribution value="0" recordCount="4025"/>
+					<ScoreDistribution value="2" recordCount="0"/>
+				</Node>
+			</Node>
+			<Node score="2" recordCount="3226">
+				<True/>
+				<ScoreDistribution value="0" recordCount="0"/>
+				<ScoreDistribution value="2" recordCount="3226"/>
+			</Node>
+		</Node>
+	</TreeModel>
+</PMML>

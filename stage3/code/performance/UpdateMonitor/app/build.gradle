@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.wwh.updatemonitor'
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.wwh.updatemonitor"
+        minSdk 31
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    // 自定义打包名称
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "AnomalyDetection.apk"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation files('libs/AdbLib.jar')
+    implementation files('libs/commons-codec-1.8.jar')
+    implementation files('libs/pmml-android-1.0-SNAPSHOT.jar')
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'com.tananaev:adblib:1.2'
+
+    //底部弹窗
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
+    //pytorch
+    implementation 'org.pytorch:pytorch_android:1.10.0'
+    implementation 'org.pytorch:pytorch_android_torchvision:1.10.0'
+
+    // implementation 'org.apache.commons:commons-math3:3.6.1'
+    // For DecisionTreePredictor example
+    // implementation 'org.jpmml:jpmml-evaluator:1.3.6'
+    // implementation 'org.jpmml:pmml-evaluator:1.3.5'
+    // implementation 'org.jpmml:pmml-evaluator-extension:1.4.1'
+    // implementation 'org.jpmml:pmml-model:1.4.1'
+}
+

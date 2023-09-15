@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CsvFileAttributes">
+    <option name="attributeMap">
+      <map>
+        <entry key="C:\Users\DELL\AppData\Local\Google\AndroidStudio2021.3\device-explorer\oneplus-le2120-dfe3a3a4\data\data\com.wwh.updatemonitor\files\YuanShenCPU.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\DELL\AppData\Local\Google\AndroidStudio2021.3\device-explorer\oneplus-le2120-dfe3a3a4\data\data\com.wwh.updatemonitor\files\YuanShenGPU.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\DELL\AppData\Local\Google\AndroidStudio2021.3\device-explorer\oneplus-le2120-dfe3a3a4\data\data\com.wwh.updatemonitor\files\YuanShenMem.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\DELL\AppData\Local\Google\AndroidStudio2021.3\device-explorer\oneplus-le2120-dfe3a3a4\data\data\com.wwh.updatemonitor\files\YuanShenNormal.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.6.7"/>
+		<Timestamp>2023-05-24T12:32:19Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('classifier', DecisionTreeClassifier())])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="label" optype="categorical" dataType="integer">
+			<Value value="0"/>
+			<Value value="1"/>
+		</DataField>
+		<DataField name="batteryTemp" optype="continuous" dataType="float"/>
+		<DataField name="gpuUsage" optype="continuous" dataType="float"/>
+		<DataField name="GpuFreq" optype="continuous" dataType="float"/>
+		<DataField name="cpu7Freq" optype="continuous" dataType="float"/>
+		<DataField name="MemAvailable" optype="continuous" dataType="float"/>
+		<DataField name="MemFree" optype="continuous" dataType="float"/>
+		<DataField name="cpuUsage" optype="continuous" dataType="float"/>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<TreeModel functionName="classification" missingValueStrategy="nullPrediction">
+		<MiningSchema>
+			<MiningField name="label" usageType="target"/>
+			<MiningField name="MemAvailable"/>
+			<MiningField name="cpuUsage"/>
+			<MiningField name="cpu7Freq"/>
+			<MiningField name="batteryTemp"/>
+			<MiningField name="gpuUsage"/>
+			<MiningField name="GpuFreq"/>
+			<MiningField name="MemFree"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+			<OutputField name="probability(1)" optype="continuous" dataType="double" feature="probability" value="1"/>
+		</Output>
+		<LocalTransformations>
+			<DerivedField name="double(MemAvailable)" optype="continuous" dataType="double">
+				<FieldRef field="MemAvailable"/>
+			</DerivedField>
+			<DerivedField name="double(cpuUsage)" optype="continuous" dataType="double">
+				<FieldRef field="cpuUsage"/>
+			</DerivedField>
+			<DerivedField name="double(cpu7Freq)" optype="continuous" dataType="double">
+				<FieldRef field="cpu7Freq"/>
+			</DerivedField>
+			<DerivedField name="double(batteryTemp)" optype="continuous" dataType="double">
+				<FieldRef field="batteryTemp"/>
+			</DerivedField>
+			<DerivedField name="double(gpuUsage)" optype="continuous" dataType="double">
+				<FieldRef field="gpuUsage"/>
+			</DerivedField>
+			<DerivedField name="double(GpuFreq)" optype="continuous" dataType="double">
+				<FieldRef field="GpuFreq"/>
+			</DerivedField>
+			<DerivedField name="double(MemFree)" optype="continuous" dataType="double">
+				<FieldRef field="MemFree"/>
+			</DerivedField>
+		</LocalTransformations>
+		<Node>
+			<True/>
+			<Node>
+				<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.12902158498764038"/>
+				<Node>
+					<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.5454485714435577"/>
+					<Node score="1" recordCount="1939">
+						<SimplePredicate field="double(cpu7Freq)" operator="lessOrEqual" value="2323200.0"/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="1939"/>
+					</Node>
+					<Node score="1" recordCount="262">
+						<SimplePredicate field="double(batteryTemp)" operator="lessOrEqual" value="50.54999923706055"/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="262"/>
+					</Node>
+					<Node score="0" recordCount="34">
+						<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.6039999723434448"/>
+						<ScoreDistribution value="0" recordCount="34"/>
+						<ScoreDistribution value="1" recordCount="0"/>
+					</Node>
+					<Node score="1" recordCount="12">
+						<True/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="12"/>
+					</Node>
+				</Node>
+				<Node>
+					<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.9055910110473633"/>
+					<Node score="0" recordCount="368">
+						<SimplePredicate field="double(GpuFreq)" operator="lessOrEqual" value="3.79E8"/>
+						<ScoreDistribution value="0" recordCount="368"/>
+						<ScoreDistribution value="1" recordCount="0"/>
+					</Node>
+					<Node score="1" recordCount="61">
+						<True/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="61"/>
+					</Node>
+				</Node>
+				<Node score="1" recordCount="495">
+					<True/>
+					<ScoreDistribution value="0" recordCount="0"/>
+					<ScoreDistribution value="1" recordCount="495"/>
+				</Node>
+			</Node>
+			<Node>
+				<SimplePredicate field="double(MemFree)" operator="lessOrEqual" value="0.3922707140445709"/>
+				<Node>
+					<SimplePredicate field="double(MemAvailable)" operator="lessOrEqual" value="0.16613265126943588"/>
+					<Node>
+						<SimplePredicate field="double(gpuUsage)" operator="lessOrEqual" value="0.16536090523004532"/>
+						<Node score="0" recordCount="1">
+							<SimplePredicate field="double(batteryTemp)" operator="lessOrEqual" value="40.900001525878906"/>
+							<ScoreDistribution value="0" recordCount="1"/>
+							<ScoreDistribution value="1" recordCount="0"/>
+						</Node>
+						<Node score="1" recordCount="21">
+							<True/>
+							<ScoreDistribution value="0" recordCount="0"/>
+							<ScoreDistribution value="1" recordCount="21"/>
+						</Node>
+					</Node>
+					<Node score="0" recordCount="107">
+						<True/>
+						<ScoreDistribution value="0" recordCount="107"/>
+						<ScoreDistribution value="1" recordCount="0"/>
+					</Node>
+				</Node>
+				<Node>
+					<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.30441100895404816"/>
+					<Node score="0" recordCount="82">
+						<SimplePredicate field="double(cpuUsage)" operator="lessOrEqual" value="0.3043457418680191"/>
+						<ScoreDistribution value="0" recordCount="82"/>
+						<ScoreDistribution value="1" recordCount="0"/>
+					</Node>
+					<Node score="1" recordCount="1">
+						<True/>
+						<ScoreDistribution value="0" recordCount="0"/>
+						<ScoreDistribution value="1" recordCount="1"/>
+					</Node>
+				</Node>
+				<Node score="0" recordCount="4875">
+					<True/>
+					<ScoreDistribution value="0" recordCount="4875"/>
+					<ScoreDistribution value="1" recordCount="0"/>
+				</Node>
+			</Node>
+			<Node score="1" recordCount="4">
+				<True/>
+				<ScoreDistribution value="0" recordCount="0"/>
+				<ScoreDistribution value="1" recordCount="4"/>
+			</Node>
+		</Node>
+	</TreeModel>
+</PMML>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.6.7"/>
+		<Timestamp>2023-05-24T10:21:51Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('classifier', DecisionTreeClassifier())])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="label" optype="categorical" dataType="integer">
+			<Value value="0"/>
+			<Value value="1"/>
+		</DataField>
+		<DataField name="FrontAPPPrivateOtherMemPercent" optype="continuous" dataType="float"/>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<TreeModel functionName="classification" missingValueStrategy="nullPrediction">
+		<MiningSchema>
+			<MiningField name="label" usageType="target"/>
+			<MiningField name="FrontAPPPrivateOtherMemPercent"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+			<OutputField name="probability(1)" optype="continuous" dataType="double" feature="probability" value="1"/>
+		</Output>
+		<LocalTransformations>
+			<DerivedField name="double(FrontAPPPrivateOtherMemPercent)" optype="continuous" dataType="double">
+				<FieldRef field="FrontAPPPrivateOtherMemPercent"/>
+			</DerivedField>
+		</LocalTransformations>
+		<Node>
+			<True/>
+			<Node score="1" recordCount="658">
+				<SimplePredicate field="double(FrontAPPPrivateOtherMemPercent)" operator="lessOrEqual" value="0.046626707538962364"/>
+				<ScoreDistribution value="0" recordCount="0"/>
+				<ScoreDistribution value="1" recordCount="658"/>
+			</Node>
+			<Node score="0" recordCount="2333">
+				<True/>
+				<ScoreDistribution value="0" recordCount="2333"/>
+				<ScoreDistribution value="1" recordCount="0"/>
+			</Node>
+		</Node>
+	</TreeModel>
+</PMML>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/pmml-android/pmml-android.iml" filepath="$PROJECT_DIR$/pmml-android/pmml-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pmml-android-example/pmml-android-example.iml" filepath="$PROJECT_DIR$/pmml-android-example/pmml-android-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pmml-android-master.iml" filepath="$PROJECT_DIR$/.idea/pmml-android-master.iml" />
+    </modules>
+  </component>
+</project>
