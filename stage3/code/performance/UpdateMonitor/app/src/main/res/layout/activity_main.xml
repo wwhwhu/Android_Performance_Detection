@@ -16,17 +16,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.192" />
+        app:layout_constraintVertical_bias="0.01999998" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="102dp"
-        android:layout_height="247dp"
+        android:layout_height="150dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.23000002">
+        app:layout_constraintVertical_bias="0.01999998">
 
         <Button
             android:id="@+id/button"
@@ -45,20 +46,36 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textView01"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="#61ABED"
+        android:text="关于异常检测结果的通知：\n检测时刻\u3000CPU\u3000GPU\u3000内存\u3000\u3000异常列表\u3000\u3000\u3000"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.93" />
+
+    <TextView
         android:id="@+id/textView2"
-        android:layout_width="321dp"
-        android:layout_height="325dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="48dp"
+        android:layout_width="0dp"
+        android:layout_height="425dp"
+        android:layout_marginBottom="8dp"
         android:background="#6200ED"
         android:fadingEdge="horizontal|vertical"
-        android:text="关于异常检测结果的通知：\n检测时刻\t\tCPU异常\t\tGPU异常\t\t内存异常"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.373" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
