@@ -2,8 +2,15 @@ package com.wwh.updatemonitor;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Trace;
 import android.util.Log;
+
+import com.cgutman.adblib.AdbBase64;
+import com.cgutman.adblib.AdbConnection;
+import com.cgutman.adblib.AdbCrypto;
+import com.cgutman.adblib.AdbStream;
+
+import org.apache.commons.codec.binary.Base64;
+import org.jpmml.evaluator.Evaluator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,7 +23,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -30,24 +36,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.cgutman.adblib.AdbBase64;
-import com.cgutman.adblib.AdbConnection;
-import com.cgutman.adblib.AdbCrypto;
-import com.cgutman.adblib.AdbStream;
-
-import org.apache.commons.codec.binary.Base64;
-import org.jpmml.evaluator.Evaluator;
-import org.pytorch.IValue;
-import org.pytorch.Module;
-import org.pytorch.Tensor;
 
 
 public class ADBLIB {
@@ -56,6 +50,8 @@ public class ADBLIB {
     private static String pid;//存放前台pid
     public ArrayList<AppInfo> appBeanList1;
     public TextUpdater textUp;
+    public Map<String, String> packageCpuUsage;
+    public Map<String, String> packageMemUsage;
 
     AdbConnection adb;
     AdbStream stream;
@@ -85,7 +81,7 @@ public class ADBLIB {
 
     public ADBLIB(Context context) {
         mContext = context;
-        textUp = new TextUpdater(MainActivity.textView);
+        textUp = new TextUpdater(MainActivity.textView, context);
     }
 
     public static AdbBase64 getBase64Impl() {
@@ -669,6 +665,97 @@ public class ADBLIB {
         }
         //endregion
 
+        //匹配Top5CPU应用名
+        String patternStrTop5CPU = "TOP5_CPUTasks";
+        Pattern patternTop5CPU = Pattern.compile(patternStrTop5CPU);
+        Matcher matcherTop5CPU = patternTop5CPU.matcher(results);
+        if (matcherTop5CPU.find()) {
+            Log.d("TOP5Info", "info find!");
+            // 定义一个正则表达式来匹配进程信息行
+            String regex = "^\\s*(.*?)\\s+(.*?)\\s+(.*?)\\s+(.*?)\\s+(.*?)\\s+(.*?)\\s+(.*?)\\s+(.*?)\\s+(\\d+.\\d+?)\\s+(.*?)\\s+(.*?)\\s+(.*)$";
+            Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+            // 使用换行符分割字符串
+            String[] lines = results.split("\n");
+            int cpuN = 0;
+            // 检查是否有足够的行
+            if (lines.length >= 17) {
+                // 使用 Arrays.copyOfRange 来删除前5行
+                lines = Arrays.copyOfRange(lines, 5, 17);
+                // 使用一个 Map 存储包名和对应的 CPU 利用率
+                packageCpuUsage = new HashMap<>();
+                for (String line : lines) {
+                    Matcher matcher = pattern.matcher(line);
+                    if (matcher.find()) {
+                        String pak_name = matcher.group(12);
+                        String cpuUsage = matcher.group(9);
+                        Log.d("TOP5Info", "CPU——TOP5:\npak_Name: " + pak_name + "\ncpuUsage: " + cpuUsage);
+                        // 不定位前台
+                        if(Objects.equals(pak_name, pak))
+                            break;
+                        if (packageCpuUsage.containsKey(pak_name)) {
+                            // 如果键已存在，将新值与旧值相加，然后更新
+                            double oldValue = Double.parseDouble(packageCpuUsage.get(pak_name));
+                            double newValue = Double.parseDouble(cpuUsage);
+                            packageCpuUsage.put(pak_name, String.valueOf(oldValue + newValue));
+                        } else {
+                            // 如果键不存在，直接插入
+                            packageCpuUsage.put(pak_name, cpuUsage);
+                            cpuN++;
+                            if (cpuN == 5)
+                                break;
+                        }
+                        // packageCpuUsage.put(pak_name, cpuUsage);
+                    }
+                }
+            }
+        }
+
+        //匹配Top5Mem应用名
+        String patternStrTop5MEM = "TOP5_MEMTasks";
+        Pattern patternTop5MEM = Pattern.compile(patternStrTop5MEM);
+        Matcher matcherTop5MEM = patternTop5MEM.matcher(results);
+        if (matcherTop5MEM.find()) {
+            Log.d("TOP5Info", "info2 find!");
+            // 定义一个正则表达式来匹配进程信息行
+            String regex = "^\\s*(.*)\\s+(\\d+.?\\d+)$";
+            Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+            // 使用换行符分割字符串
+            String[] lines = results.split("\n");
+            int memN = 0;
+            // 检查是否有足够的行
+            if (lines.length >= 17) {
+                // 使用 Arrays.copyOfRange 来删除前5行
+                lines = Arrays.copyOfRange(lines, 5, 17);
+                // 使用一个 Map 存储包名和对应的 Mem 利用率
+                packageMemUsage = new HashMap<>();
+                for (String line : lines) {
+                    Matcher matcher = pattern.matcher(line);
+                    Log.d("TOP5Info", line);
+                    if (matcher.find()) {
+                        String pak_name = matcher.group(1);
+                        String memUsage = matcher.group(2);
+                        Log.d("TOP5Info", "MEM——TOP5:\npak_Name: " + pak_name + "\nmemUsage: " + memUsage);
+                        // 不定位前台
+                        if(Objects.equals(pak_name, pak))
+                            break;
+                        if (packageMemUsage.containsKey(pak_name)) {
+                            // 如果键已存在，将新值与旧值相加，然后更新
+                            double oldValue = Double.parseDouble(packageMemUsage.get(pak_name));
+                            double newValue = Double.parseDouble(memUsage);
+                            packageMemUsage.put(pak_name, String.valueOf(oldValue + newValue));
+                        } else {
+                            // 如果键不存在，直接插入
+                            packageMemUsage.put(pak_name, memUsage);
+                            memN++;
+                            Log.d("TOP5Info", String.valueOf(memN));
+                            if (memN == 5)
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
         //匹配前台应用的内存
         //String patternStrCPUEach = "Target\\s+TOTAL PSS:\\s+(\\d+)\\s+TOTAL RSS:\\s+(\\d+)\\s+TOTAL SWAP PSS:\\s+(\\d+)\\s+Name:(([a-zA-Z0-9]|.)*)$";
 //        String patternStrmemEach = "Target\\s+TOTAL PSS:\\s+(\\d+)\\s+TOTAL RSS:\\s+(\\d+)\\s+TOTAL SWAP PSS:\\s+(\\d+)\\s+Name:(([a-zA-Z0-9]|.)*)$";
@@ -740,7 +827,8 @@ public class ADBLIB {
         combinedResult.putAll(parsedResults);
         //新建文件csv23
 
-        String csvfilepath = fileDir.toString() + "/result.csv";
+//        String csvfilepath = fileDir.toString() + "/result.csv";
+        String csvfilepath = fileDir.toString() + "/" + pak + ".csv";
         File csvFile = new File(csvfilepath);
         try {
             if (!csvFile.exists()) {
@@ -762,7 +850,8 @@ public class ADBLIB {
         }
 
         //将全局信息写入文件
-        String filepath = fileDir.toString() + "/result.txt";
+        // String filepath = fileDir.toString() + "/result.txt";
+        String filepath = fileDir.toString() + "/" + pak + ".txt";
         File xlsFile = new File(filepath);
         try {
             if (!xlsFile.exists()) {
@@ -782,7 +871,7 @@ public class ADBLIB {
         }
         try {
             // 阈值可调节
-            if((Integer.parseInt((String)combinedResult.get("Total missed")))>0) {
+            if ((Integer.parseInt((String) combinedResult.get("Total missed"))) > -1) {
                 Log.d("WRITEEEE", "掉帧超过阈值,Total missed = " + combinedResult.get("Total missed"));
                 Log.d("WRITEEEE", "writeLog: " + combinedResult.toString());
                 if (foreW == 2) {
@@ -792,8 +881,7 @@ public class ADBLIB {
                     Log.d("WRITEEEE", "调用usemodel云端");
                     useModelOnline(pak, combinedResult);
                 }
-            }
-            else{
+            } else {
                 Log.d("WRITEEEE", "掉帧未超过阈值,Total missed = " + combinedResult.get("Total missed"));
             }
         } catch (Exception e) {
@@ -807,27 +895,46 @@ public class ADBLIB {
     }
 
     public void useModel(String pak, Map parsedResults) {
+
         DecisionTreePredictor demo = new DecisionTreePredictor(mContext);
+        long startTime = System.currentTimeMillis();
         Evaluator model = demo.loadPmml(pak, 1);
-        int res = demo.predict(pak, model, parsedResults);
+        int res = demo.predict(pak, model, parsedResults, 1);
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        // 打印执行时间到 Log
+        Log.d("Predict_Time: " ,"CPU" + elapsedTime + " 毫秒");
+
+        startTime = System.currentTimeMillis();
         Evaluator model2 = demo.loadPmml(pak, 2);
-        int res2 = demo.predict(pak, model2, parsedResults);
+        int res2 = demo.predict(pak, model2, parsedResults, 2);
+        elapsedTime = System.currentTimeMillis() - startTime;
+        Log.d("Predict_Time: " ,"GPU" + elapsedTime + " 毫秒");
+
+        startTime = System.currentTimeMillis();
         Evaluator model3 = demo.loadPmml(pak, 3);
-        int res3 = demo.predict(pak, model3, parsedResults);
+        int res3 = demo.predict(pak, model3, parsedResults, 3);
+        elapsedTime = System.currentTimeMillis() - startTime;
+        Log.d("Predict_Time: " ,"MEM" + elapsedTime + " 毫秒");
+        if(res==-1||res2==-1||res3==-1)
+        {
+            Log.d("model","数据未获取");
+            return;
+        }
         Log.d("model:", "模型输出CPU异常检测结果：" + String.valueOf(res));
         Log.d("model:", "模型输出GPU异常检测结果：" + String.valueOf(res2));
         Log.d("model:", "模型输出内存异常检测结果：" + String.valueOf(res3));
         Log.d("WRITEEEE", "调用usemodel本地检测结果：\n" + "CPU异常检测结果：" + resg(res) + "\nGPU异常检测结果：" + resg(res2) + "\n内存异常检测结果：" + resg(res3));
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String formattedDate = dateFormat.format(date);
-        textUp.addNewText("\n" + formattedDate + "\t\t" + resg(res) + "\t\t\t\t" + resg(res2) + "\t\t\t\t" + resg(res3));
+        textUp.addNewText(res, res2, res3, packageCpuUsage, packageMemUsage, "\n" + formattedDate + "\t\t" + resg(res) + "\t\t\t\t" + resg(res2) + "\t\t\t\t" + resg(res3));
     }
 
     private String resg(int a) {
         return a == 0 ? "正常" : "异常";
     }
+
     //模型的部署
     public double[] getdata(Map parsedResults, String pak) {
         double x0 = Double.valueOf((String) parsedResults.get("batteryTemp"));
@@ -868,10 +975,10 @@ public class ADBLIB {
         double x23 = Double.valueOf((String) parsedResults.get("thermalStatus"));
         double x24 = Double.valueOf((String) parsedResults.get("wifiSpeed"));
         double x25 = Double.valueOf((String) parsedResults.get("JankyNum")) / Double.valueOf((String) parsedResults.get("TotalFrames"));
-        if (pak.equals("com.taobao.taobao")||pak.equals("com.ss.android.ugc.aweme")||pak.equals("com.miHoYo.ys.mi")) {
-            return new double[]{x8,x12,x11,x13,x14,x15,x16,x17,x18,x1_0,x1_1,x1_2,x1_3,x1_4,x1_5,x1_6,x1_7,x0,x23,x4,x20,x5_0,x5_1,x5_2,x5_3,x5_4,x5_5,x5_6,x5_7};
-        } else{
-            return new double[]{x1_0,x1_1,x1_2,x1_3,x1_4,x1_5,x1_6,x1_7,x0,x23,x4,x20,x5_0,x5_1,x5_2,x5_3,x5_4,x5_5,x5_6,x5_7,x21,x22,x7};
+        if (pak.equals("com.taobao.taobao") || pak.equals("com.ss.android.ugc.aweme") || pak.equals("com.miHoYo.ys.mi") || pak.equals("com.miHoYo.Yuanshen")) {
+            return new double[]{x8, x12, x11, x13, x14, x15, x16, x17, x18, x1_0, x1_1, x1_2, x1_3, x1_4, x1_5, x1_6, x1_7, x0, x23, x4, x20, x5_0, x5_1, x5_2, x5_3, x5_4, x5_5, x5_6, x5_7};
+        } else {
+            return new double[]{x1_0, x1_1, x1_2, x1_3, x1_4, x1_5, x1_6, x1_7, x0, x23, x4, x20, x5_0, x5_1, x5_2, x5_3, x5_4, x5_5, x5_6, x5_7, x21, x22, x7};
         }
     }
 
@@ -906,7 +1013,7 @@ public class ADBLIB {
                 Log.d("model", "Client: 连接中Connecting...");
                 // 应用Server的IP和端口建立Socket对象
                 socket = new Socket(serverAddr, 6006);
-                String message = "---Test_Socket_Android(Data Num:" + tensor.length + " ; FrontApp: "+ pak + ")---";
+                String message = "---Test_Socket_Android(Data Num:" + tensor.length + " ; FrontApp: " + pak + ")---";
                 Log.d("model", "Client: 发送中Sending: '" + message + "'");
                 // 将信息通过这个对象来发送给Server
                 PrintWriter out = new PrintWriter(new BufferedWriter(
@@ -928,7 +1035,7 @@ public class ADBLIB {
                 Pattern pattern = Pattern.compile(patternStr);
                 Matcher matcher = pattern.matcher(msg);
                 if (matcher.find()) {
-                    textUp.addNewText("\n已经连接到192.168.1.139服务器......");
+                    textUp.addNewText2("\n已经连接到192.168.1.139服务器......");
                     int res1 = Integer.parseInt(matcher.group(1));
                     int res2 = Integer.parseInt(matcher.group(2));
                     int res3 = Integer.parseInt(matcher.group(3));
@@ -940,7 +1047,7 @@ public class ADBLIB {
                     Date date = calendar.getTime();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss", Locale.getDefault());
                     String formattedDate = dateFormat.format(date);
-                    textUp.addNewText("\n" + formattedDate + "\t\t" + resg(res1) + "\t\t\t\t" + resg(res2) + "\t\t\t\t" + resg(res3));
+                    textUp.addNewText(res1, res2, res3, packageCpuUsage, packageMemUsage, "\n" + formattedDate + "\t\t" + resg(res1) + "\t\t\t\t" + resg(res2) + "\t\t\t\t" + resg(res3));
                 }
                 // 在页面上进行显示
                 Log.d("model", "Success");

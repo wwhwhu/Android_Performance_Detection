@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     String date = options1Items.get(options1);
                     if (Objects.equals(date, "使用云端预测(Server)")) {
                         Log.d("ADBLIB", "使用云端预测(Server)");
+                        Log.d("Model_Result","开始检测");
                         fore = 1;
                         t.setText("监控+云端预测");
                         Bundle bundle = new Bundle();
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("ADBLIB", "使用本地预测(Local)");
                         fore = 2;
                         t.setText("监控+本地预测");
+                        Log.d("Model_Result","开始检测");
                         Bundle bundle = new Bundle();
                         bundle.putString("fore", String.valueOf(fore));
                         intent_monitor.putExtras(bundle);
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     //在此获取选择到的内容
                 }
-            }).setTitleText("选择预测方式").setContentTextSize(25).setTitleSize(20).setOutSideCancelable(false).isDialog(true).build();
+            }).setTitleText("选择预测方式").setContentTextSize(25).setTitleSize(15).setOutSideCancelable(false).isDialog(true).build();
             pvOptions.setPicker(options1Items);
             pvOptions.show();
             //用于后台监控Service
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     // 关闭前台Service
     private void onClick2(View view) {
         // 停止前台Service
+        Log.d("Model_Result","停止检测");
         stopService(new Intent(this,MonitorService.class));
         btnMonitor.setEnabled(true);
         btnMonitor2.setEnabled(false);

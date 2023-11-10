@@ -43,7 +43,7 @@ public class MonitorService extends ForegroundService{
         {
             IP = exx.getString("ipADDR");
             foreW = Integer.parseInt(exx.getString("fore"));
-           appBeanList = (ArrayList<AppInfo>) exx.getSerializable("appBeanList");
+            appBeanList = (ArrayList<AppInfo>) exx.getSerializable("appBeanList");
         }
         Log.d("IP_WLAN", "onStartCommand: "+IP);
         Log.d("allApp", String.valueOf(appBeanList.size()));
@@ -85,10 +85,12 @@ public class MonitorService extends ForegroundService{
         //  获取网络相关情况
         commands.add(" dumpsys connectivity| grep 'Link speed'");
         //  获取FPS,暂定
-        //commands.add(" top -m 10 -s 9");
+        commands.add(" echo \"TOP5_CPU$(top -n 1 -b | head -n 17)\"");
+        commands.add(" echo \"TOP5_MEM$(top -n 1 -b -o ARGS,%MEM | head -n 17)\"");
         //commands.add(" top -m 10 -s 10");
 
         ADBLIB adbl = new ADBLIB(this);
+
         // 获取结果
         File filesDir = getApplicationContext().getFilesDir();
         //Init 执行一次
